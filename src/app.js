@@ -16,6 +16,7 @@ process.on('unhandledRejection', (reason, p) =>
 
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, '/../public')))
+app.use(express.static(path.join(__dirname, '/../node_modules')))
 app.use(cookieParser())
 
 app.use(logger(process.env.LOG_ENV))
