@@ -19,3 +19,22 @@ $ npm install
 ```
 Run Project with:
 ```$ npm run dev```
+
+## Start Out
+
+Add the following to your `index.html`:
+
+```
+    <script src="/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+``` 
+
+## Show elements
+
+Syntax: `{{item.title}}`
+
+## Directives
+
+[Vue Directives](https://012.vuejs.org/guide/directives.html)
+
+
