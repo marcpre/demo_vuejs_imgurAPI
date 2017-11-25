@@ -1,28 +1,28 @@
 require('dotenv-safe').load()
 const express = require('express')
-
-const app = express()
 const path = require('path')
-const server = require('http').createServer(app)
 const axios = require('axios')
 const querystring = require('querystring')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+
+const app = express()
 
 process.on('uncaughtException', err =>
   console.error('uncaught exception: ', err))
 process.on('unhandledRejection', (reason, p) =>
   console.error('unhandled rejection: ', reason, p))
 
+app.set('views', path.join(__dirname, 'views'))
+app.use(express.static(path.join(__dirname, '/../public')))
+app.use(cookieParser())
+
 app.use(logger(process.env.LOG_ENV))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: false,
-}))
-app.set('views', path.join(__dirname, 'views'))
 
 app.get('/', (req, res) => {
-  res.sendFile('index.html')
+  res.sendFile(path.join(`${__dirname}/views/index.html`))
 })
 
 const instance = axios.create({
@@ -43,16 +43,9 @@ app.get('/search/:query', (req, res) => {
     })
 })
 
-// app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
-app.use(path.join(`${__dirname}/../public`), express.static(path.join(__dirname, 'public')))
-
-if (process.env.NODE_ENV !== 'production') {
-  require('reload')(server, app)
-}
-
 const port = process.env.APP_PORT || 8080
 const host = process.env.APP_HOST || 'localhost'
 
-server.listen(process.env.PORT, () => {
+app.listen(port, () => {
   console.log(`Listening on ${host}:${port}`)
 })
